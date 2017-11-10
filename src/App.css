@@ -40,6 +40,12 @@
   font-weight: bold;
   text-align: center;
 }
+.left {
+  float:left;
+}
+.right {
+  text-align:right;
+}
 
 
 @keyframes App-logo-spin {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import WorkoutDayCount from './components/WorkoutDayCount';
 import AddDatabaseForm from './components/AddDatabaseForm';
+import DatabaseList from './components/DatabaseList';
 import './App.css';
 
 class App extends Component {
@@ -12,11 +13,12 @@ class App extends Component {
         </div>
         <div className="container">
           <div className="row">
-            <div className="col-sm-4">
+            <div className="col-sm-6">
               <AddDatabaseForm/>
             </div>
-            <div className="col-sm-8">
-               <WorkoutDayCount total={36} running={12} climbing={24} goal={50}/>
+            <div className="col-sm-6">
+               <DatabaseList/><br/><br/><br/><br/>
+
             </div>
           </div>
         </div>
