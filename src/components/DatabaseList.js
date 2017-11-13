@@ -13,6 +13,17 @@ console.log(store.getState())
 
 let state = initialState
 
+store.dispatch({
+    type: C.REMOVE_DATABASE,
+    payload: '2'
+})
+store.dispatch({
+    type: C.ADD_DATABASE,
+    payload: {"id": "6", "title": "New", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test", "description": "TEST"}
+})
+
+console.log(store.getState())
+
 
 class DatabaseList extends Component {
   constructor(props) {
