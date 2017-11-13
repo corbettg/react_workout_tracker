@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import { FormGroup, Label, Input, ListGroup, ListGroupItem, Button } from 'reactstrap'
 import C from '../constants'
-import { allDatabases } from '../initialState'
+import appReducer from '../store/reducers'
+import initialState from '../initialState'
+import { createStore } from 'redux'
 import '../App.css'
+
+//The secod argument passed in here will set the initial state
+const store = createStore(appReducer, initialState)
+
+console.log(store.getState())
+
+let state = initialState
+
 
 class DatabaseList extends Component {
   constructor(props) {
@@ -10,7 +20,7 @@ class DatabaseList extends Component {
     this.state = {
          letter: 'a',
          //this variable will eventually be replaced with the data from the API
-         databases: allDatabases,
+         databases: state.allDatabases,
          databaseList: 'Select a letter above to see a list of databases'
      }
 
@@ -35,7 +45,6 @@ class DatabaseList extends Component {
   }
 
   render() {
-    console.log(Object.keys(C).join('\n'))
     return (
         <div className = "databas-list">
           <h2>Database List</h2><hr/>
