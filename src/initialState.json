@@ -1,9 +1,19 @@
 {
   "allDatabases": [
-    {"id": "1", "title": "ABC-CLIO E-book Collection", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test", "description": "TEST"},
-    {"id": "2", "title": "ABI/INFORM Collection", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test", "description": "TEST"},
-    {"id": "3", "title": "African American Newspapers, 19th century", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test", "description": "TEST"},
-    {"id": "4", "title": "ALTBIB: Bibliography on Alternatives to Animal Testing", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test", "description": "TEST"},
-    {"id": "5", "title": "American Fiction", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test", "description": "TEST"}
-  ]
+    {"id": 1, "title": "ABC-CLIO E-book Collection", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test 1", "description": "TEST"},
+    {"id": 2, "title": "ABI/INFORM Collection", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test 2", "description": "TEST"},
+    {"id": 3, "title": "Bfrican American Newspapers, 19th century", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test 3", "description": "TEST"},
+    {"id": 4, "title": "ALTBIB: Bibliography on Alternatives to Animal Testing", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test 4", "description": "TEST"},
+    {"id": 5, "title": "Cmerican Fiction", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test 5", "description": "TEST"}
+  ],
+  "databaseListFilter": "A",
+  "currentAction": "Add Database",
+  "currentDatabase": {
+    "id": null,
+    "title": "",
+    "link": "",
+    "proxy": "No",
+    "advisory": "",
+    "description": ""
+  }
 }

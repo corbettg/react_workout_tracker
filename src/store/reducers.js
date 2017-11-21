@@ -17,9 +17,42 @@ export const allDatabases = (state=[], action ) => {
       default:
           return state
     }
-
 }
 
+export const currentDatabase = (state=[], action) => {
+    switch (action.type) {
+      case C.UPDATE_CURRENT_DATABASE:
+          return action.payload
+      case C.CLEAR_CURRENT_DATABASE:
+          return action.payload
+      default:
+          return state
+    }
+}
+
+export const currentAction = (state=[], action) => {
+    switch (action.type) {
+      case C.UPDATE_CURRENT_ACTION:
+          return action.payload
+      default:
+          return state
+    }
+}
+
+
+export const databaseListFilter = (state=[], action) => {
+    switch (action.type) {
+      case C.UPDATE_DATABASE_LIST_FILTER:
+          return action.payload
+      default:
+          return state
+    }
+}
+
+
 export default combineReducers({
-    allDatabases
+    allDatabases,
+    currentDatabase,
+    currentAction,
+    databaseListFilter
 })

@@ -1,58 +1,26 @@
 import React, { Component } from 'react';
 import { FormGroup, Label, Input, ListGroup, ListGroupItem, Button } from 'reactstrap'
-import C from '../constants'
-import appReducer from '../store/reducers'
-import initialState from '../initialState'
-import { createStore } from 'redux'
+import { connect } from 'react-redux'
+import { updateDatabaseListFilter, updateCurrentDatabase, clearCurrentDatabase, updateCurrentAction } from '../actions'
 import '../App.css'
 
-//The secod argument passed in here will set the initial state
-const store = createStore(appReducer, initialState)
+const mapStateToProps = (state) => {
+  return { allDatabases: state.allDatabases, databaseListFilter: state.databaseListFilter }
+}
 
-console.log(store.getState())
-
-let state = initialState
-
-store.dispatch({
-    type: C.REMOVE_DATABASE,
-    payload: '2'
-})
-store.dispatch({
-    type: C.ADD_DATABASE,
-    payload: {"id": "6", "title": "New", "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "proxy": "Yes", "advisory": "Test", "description": "TEST"}
-})
-
-console.log(store.getState())
-
+var colorToUse = 'default'
 
 class DatabaseList extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-         letter: 'a',
-         //this variable will eventually be replaced with the data from the API
-         databases: state.allDatabases,
-         databaseList: 'Select a letter above to see a list of databases'
-     }
-
-     this.updateDatabaseList = this.updateDatabaseList.bind(this);
-  }
 
   updateDatabaseList(event) {
       event.preventDefault();
       let letter = event.target.value;
-      var colorToUse = 'default'
+      this.props.dispatch(updateDatabaseListFilter(letter))
+  }
 
-      var databaseList = this.state.databases.map(function(database, index) {
-
-          if (letter.toLowerCase() === database.title[0].toLowerCase()) {
-              colorToUse === 'default' ? colorToUse = 'info' : colorToUse = 'default'
-              return <ListGroupItem key={database.id} color={colorToUse} className = "right"><span className = "left">{database.title}</span>
-                        <span><Button color={colorToUse}>Edit</Button></span></ListGroupItem>;
-            }
-      })
-
-      this.setState({databaseList})
+  editDatabase(database) {
+      this.props.dispatch(updateCurrentAction("Save Changes"))
+      this.props.dispatch(updateCurrentDatabase(database.id, database.title, database.link, database.proxy, database.advisory, database.description))
   }
 
   render() {
@@ -67,10 +35,18 @@ class DatabaseList extends Component {
                <option>S</option><option>T</option><option>U</option><option>V</option><option>W</option><option>X</option><option>Y</option><option>Z</option>
              </Input>
             </FormGroup>
-          <ListGroup>{this.state.databaseList}</ListGroup>
+          <ListGroup>{
+            this.props.allDatabases.map(function(database, index) {
+                if (this.props.databaseListFilter.toLowerCase() === database.title[0].toLowerCase()) {
+                    colorToUse === 'default' ? colorToUse = 'info' : colorToUse = 'default'
+                    return <ListGroupItem key={database.id} color={colorToUse} className = "right"><span className = "left">{database.title}</span>
+                              <span><Button color={colorToUse} onClick={() => this.editDatabase(database)}>Edit</Button></span></ListGroupItem>;
+                  }
+            }, this)}
+          </ListGroup>
         </div>
       );
     }
   }
 
-export default DatabaseList;
+export default connect(mapStateToProps)(DatabaseList)

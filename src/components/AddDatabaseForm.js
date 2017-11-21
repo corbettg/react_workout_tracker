@@ -1,33 +1,52 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import { connect } from 'react-redux'
+import { addDatabase, editDatabase, removeDatabase, updateCurrentDatabase, clearCurrentDatabase, updateCurrentAction } from '../actions'
 
-export default class AddDatabaseForm extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-				 formValues: {title: '', link: '', proxy: '', advisory: '', description: ''}
-		 }
+const mapStateToProps = state => {
+  return { currentDatabase: state.currentDatabase, currentAction: state.currentAction }
+}
 
-		this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-	}
+
+class AddDatabaseForm extends Component {
 
 	handleChange(event) {
 			 event.preventDefault();
-			 let formValues = this.state.formValues;
+			 let currentDB = this.props.currentDatabase
 			 let name = event.target.name;
 			 let value = event.target.value;
+			 currentDB[name] = value;
 
-			 formValues[name] = value;
-
-			 this.setState({formValues})
-			 console.log(this.state.formValues);
+			 this.props.dispatch(updateCurrentDatabase(
+				 currentDB.id, currentDB.title, currentDB.link, currentDB.proxy, currentDB.advisory, currentDB.description
+			 ))
 	 }
 
 	 handleSubmit(event) {
 			 event.preventDefault();
-			 console.log(this.state.formValues);
+			 let action = this.props.currentAction;
+			 let currentDB = this.props.currentDatabase
+			 console.log(event.target.value)
+			 switch (action) {
+	       case "Add Database":
+						 this.props.dispatch(addDatabase(currentDB.title, currentDB.link, currentDB.proxy, currentDB.advisory, currentDB.description))
+						 this.props.dispatch(clearCurrentDatabase())
+						 break
+	       case "Save Changes":
+						 this.props.dispatch(editDatabase(currentDB.id, currentDB.title, currentDB.link, currentDB.proxy, currentDB.advisory, currentDB.description))
+						 this.props.dispatch(clearCurrentDatabase())
+						 this.props.dispatch(updateCurrentAction("Add Database"))
+						 break
+	       default:
+	           "Error"
+	     }
 	 }
+
+	 removeDatabase(id) {
+				this.props.dispatch(removeDatabase(id))
+				this.props.dispatch(clearCurrentDatabase())
+				this.props.dispatch(updateCurrentAction("Add Database"))
+		}
 
 	render() {
 		return (
@@ -36,11 +55,11 @@ export default class AddDatabaseForm extends Component {
 					<Form onSubmit={this.handleSubmit.bind(this)}>
 						 <FormGroup>
 							 <Label for="text">Title</Label>
-							 <Input id="title" type="text" required name="title" value={this.state.formValues["title"]} onChange={this.handleChange.bind(this)}/>
+							 <Input id="title" type="text" required name="title" value={this.props.currentDatabase.title} onChange={this.handleChange.bind(this)}/>
 						 </FormGroup>
 						 <FormGroup>
 							 <Label for="link">Link</Label>
-							 <Input id="link" type="text" required name="link" value={this.state.formValues["link"]} onChange={this.handleChange.bind(this)}/>
+							 <Input id="link" type="text" required name="link" value={this.props.currentDatabase.link} onChange={this.handleChange.bind(this)}/>
 						 </FormGroup>
 
 						<FormGroup>
@@ -52,15 +71,18 @@ export default class AddDatabaseForm extends Component {
 					 </FormGroup>
 						<FormGroup>
 							<Label for="advisory">Advisory</Label>
-							<Input id="advisory" type="textarea" rows="4" required name="advisory" value={this.state.formValues["advisory"]} onChange={this.handleChange.bind(this)} />
+							<Input id="advisory" type="textarea" rows="4" required name="advisory" value={this.props.currentDatabase.advisory} onChange={this.handleChange.bind(this)} />
 						</FormGroup>
 						 <FormGroup>
 							 <Label for="description">Description</Label>
-							 <Input id="description" type="textarea" rows="10" required name="description" value={this.state.formValues["description"]} onChange={this.handleChange.bind(this)} />
+							 <Input id="description" type="textarea" rows="10" required name="description" value={this.props.currentDatabase.description} onChange={this.handleChange.bind(this)} />
 						 </FormGroup>
-						 <Button color="primary">Add Database</Button>
+						 <Button color={this.props.currentAction === "Save Changes" ? "success" : "primary"}>{this.props.currentAction ? this.props.currentAction: "Add Database"}</Button>
+						 {this.props.currentAction === "Save Changes" ?  <Button color="danger" onClick={() => this.removeDatabase(this.props.currentDatabase.id)}>Delete Database</Button> : null}
 					</Form>
 			</div>
 		)
 	}
 }
+
+export default connect(mapStateToProps)(AddDatabaseForm)
