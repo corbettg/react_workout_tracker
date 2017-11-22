@@ -8,7 +8,7 @@ export const allDatabases = (state=[], action ) => {
     switch(action.type) {
       case C.ADD_DATABASE:
           //What is happening below is that we are checking to see if the title already exists. If it does, we do not update state
-          const hasTitle = state.some(database => database.title === action.payload.title)
+          const hasTitle = state.some(database => database.resourceName === action.payload.resourceName)
           return (hasTitle) ? state : [ ...state, database(null, action)]
       case C.EDIT_DATABASE:
           return state.map(database => database.id === action.payload.id ? action.payload : database)

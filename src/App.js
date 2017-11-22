@@ -22,7 +22,7 @@ class App extends Component {
                 <AddDatabaseForm/>
               </div>
               <div className="col-sm-6">
-                 <DatabaseList/><br/><br/><br/><br/>
+                 <DatabaseList/><br/><br/>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormGroup, Label, Input, ListGroup, ListGroupItem, Button } from 'reactstrap'
 import { connect } from 'react-redux'
-import { updateDatabaseListFilter, updateCurrentDatabase, clearCurrentDatabase, updateCurrentAction } from '../actions'
+import { updateDatabaseListFilter, updateCurrentDatabase, updateCurrentAction } from '../actions'
 import '../App.css'
 
 const mapStateToProps = (state) => {
@@ -20,7 +20,8 @@ class DatabaseList extends Component {
 
   editDatabase(database) {
       this.props.dispatch(updateCurrentAction("Save Changes"))
-      this.props.dispatch(updateCurrentDatabase(database.id, database.title, database.link, database.proxy, database.advisory, database.description))
+      this.props.dispatch(updateCurrentDatabase(database.id, database.resourceName, database.resourceType, database.link, database.resourceAdvisory,
+           database.resourceAdvisoryText, database.shortDescription, database.longDescription, database.coverageDates, database.access, database.vendor))
   }
 
   render() {
@@ -37,11 +38,12 @@ class DatabaseList extends Component {
             </FormGroup>
           <ListGroup>{
             this.props.allDatabases.map(function(database, index) {
-                if (this.props.databaseListFilter.toLowerCase() === database.title[0].toLowerCase()) {
+                if (this.props.databaseListFilter.toLowerCase() === database.resourceName[0].toLowerCase()) {
                     colorToUse === 'default' ? colorToUse = 'info' : colorToUse = 'default'
-                    return <ListGroupItem key={database.id} color={colorToUse} className = "right"><span className = "left">{database.title}</span>
+                    return <ListGroupItem key={database.id} color={colorToUse} className = "right"><span className = "left">{database.resourceName}</span>
                               <span><Button color={colorToUse} onClick={() => this.editDatabase(database)}>Edit</Button></span></ListGroupItem>;
                   }
+                return null
             }, this)}
           </ListGroup>
         </div>

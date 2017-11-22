@@ -1,18 +1,18 @@
 import C from './constants'
 
-export function addDatabase(title, link, proxy, advisory, description) {
+export function addDatabase(resourceName, resourceType, link, resourceAdvisory, resourceAdvisoryText, shortDescription, longDescription, coverageDates, access, vendor) {
   var id = Math.floor(Math.random(1) * 100);
   //ADD APP LOGIC HERE
   return {
     type: C.ADD_DATABASE,
-    payload: {id, title, link, proxy, advisory, description}
+    payload: {id, resourceName, resourceType, link, resourceAdvisory, resourceAdvisoryText, shortDescription, longDescription, coverageDates, access, vendor}
   }
 }
-export function editDatabase(id, title, link, proxy, advisory, description) {
+export function editDatabase(id, resourceName, resourceType, link, resourceAdvisory, resourceAdvisoryText, shortDescription, longDescription, coverageDates, access, vendor) {
   //ADD APP LOGIC HERE
   return {
     type: C.EDIT_DATABASE,
-    payload: {id, title, link, proxy, advisory, description}
+    payload: {id, resourceName, resourceType, link, resourceAdvisory, resourceAdvisoryText, shortDescription, longDescription, coverageDates, access, vendor}
   }
 }
 export function removeDatabase(id) {
@@ -23,18 +23,19 @@ export function removeDatabase(id) {
   }
 }
 
-export function updateCurrentDatabase(id, title, link, proxy, advisory, description) {
+export function updateCurrentDatabase(id, resourceName, resourceType, link, resourceAdvisory, resourceAdvisoryText, shortDescription, longDescription, coverageDates, access, vendor) {
   //ADD APP LOGIC HERE
   return {
     type: C.UPDATE_CURRENT_DATABASE,
-    payload: {id, title, link, proxy, advisory, description}
+    payload: {id, resourceName, resourceType, link, resourceAdvisory, resourceAdvisoryText, shortDescription, longDescription, coverageDates, access, vendor}
   }
 }
 export function clearCurrentDatabase() {
   //ADD APP LOGIC HERE
   return {
     type: C.CLEAR_CURRENT_DATABASE,
-    payload: { "id": null, "title": "", "link": "", "proxy": "No", "advisory": "", "description": ""}
+    payload: { "id": null, "resourceName": "", "resourceType": "None", "link": "", "resourceAdvisory": "None", "resourceAdvisoryText": "",
+      "shortDescription": "", "longDescription": "", "coverageDates": "", "access": "Free", "vendor": ""}
   }
 }
 
