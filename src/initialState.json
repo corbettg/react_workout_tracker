@@ -1,4 +1,10 @@
 {
+  "user": {
+    "username": "",
+    "isLoggedIn": false,
+    "token": ""
+  },
+  "modal": false,
   "allDatabases": [
     {"id": 1, "resourceName": "ABC-CLIO E-book Collection", "resourceType": ["Article Database", "Videos"], "link": "http://www.nclive.org/cgi-bin/nclsm?rsrc=297", "resourceAdvisory": "None",
       "resourceAdvisoryText": "Advisory 1", "shortDescription": "Short 1", "longDescription": "Long 1", "coverageDates": "1991-Present", "access": "UNCW", "vendor": "ProQuest 1"},

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input, InputGroup, InputGroupAddon } from 'reactstrap'
 import { connect } from 'react-redux'
-import { addDatabase, editDatabase, removeDatabase, updateCurrentDatabase, clearCurrentDatabase, updateCurrentAction } from '../actions'
+import { displayModal, addDatabase, editDatabase, removeDatabase, updateCurrentDatabase, clearCurrentDatabase, updateCurrentAction } from '../actions'
 
 const mapStateToProps = state => {
-  return { currentDatabase: state.currentDatabase, currentAction: state.currentAction }
+  return { modal: state.modal, user: state.user, currentDatabase: state.currentDatabase, currentAction: state.currentAction }
 }
 
 
@@ -22,8 +22,6 @@ class AddDatabaseForm extends Component {
 
 			 currentDB[name] = value;
 
-			 console.log(currentDB)
-
 			 this.props.dispatch(updateCurrentDatabase(currentDB.id, currentDB.resourceName, currentDB.resourceType, currentDB.link, currentDB.resourceAdvisory,
            currentDB.resourceAdvisoryText, currentDB.shortDescription, currentDB.longDescription, currentDB.coverageDates, currentDB.access, currentDB.vendor))
 	 }
@@ -32,18 +30,49 @@ class AddDatabaseForm extends Component {
 			 event.preventDefault();
 			 let action = this.props.currentAction;
 			 let currentDB = this.props.currentDatabase
-			 console.log(event.target.value)
 			 switch (action) {
 	       case "Add Database":
-						 this.props.dispatch(addDatabase(currentDB.resourceName, currentDB.resourceType, currentDB.link, currentDB.resourceAdvisory, currentDB.resourceAdvisoryText,
-							 currentDB.shortDescription, currentDB.longDescription, currentDB.coverageDates, currentDB.access, currentDB.vendor))
-						 this.props.dispatch(clearCurrentDatabase())
+             if (this.props.user.isLoggedIn) {
+               fetch('https://libapps.uncw.edu/databases/', {
+                 method: 'POST',
+                 headers: {
+                   'Accept': 'application/json',
+                   'Content-Type': 'application/json',
+                 },
+                 body: JSON.stringify({ token: this.props.user.token,
+                   resourceName: currentDB.resourceName, resourceType: currentDB.resourceType.toString(), link: currentDB.link, resourceAdvisory: currentDB.resourceAdvisory,
+                   resourceAdvisoryText: currentDB.resourceAdvisoryText, shortDescription: currentDB.shortDescription, longDescription: currentDB.longDescription,
+                   coverageDates: currentDB.coverageDates, access: currentDB.access, vendor: currentDB.vendor
+                 })
+               })
+  						 this.props.dispatch(addDatabase(currentDB.resourceName, currentDB.resourceType, currentDB.link, currentDB.resourceAdvisory, currentDB.resourceAdvisoryText,
+  							 currentDB.shortDescription, currentDB.longDescription, currentDB.coverageDates, currentDB.access, currentDB.vendor))
+  						 this.props.dispatch(clearCurrentDatabase())
+             } else {
+               this.props.dispatch(displayModal(!this.props.modal))
+             }
 						 break
 	       case "Save Changes":
-						 this.props.dispatch(editDatabase(currentDB.id, currentDB.resourceName, currentDB.resourceType, currentDB.link, currentDB.resourceAdvisory, currentDB.resourceAdvisoryText,
-							 currentDB.shortDescription, currentDB.longDescription, currentDB.coverageDates, currentDB.access, currentDB.vendor))
-						 this.props.dispatch(clearCurrentDatabase())
-						 this.props.dispatch(updateCurrentAction("Add Database"))
+             if (this.props.user.isLoggedIn) {
+               fetch('https://libapps.uncw.edu/databases/' + currentDB.id, {
+                 method: 'PUT',
+                 headers: {
+                   'Accept': 'application/json',
+                   'Content-Type': 'application/json',
+                 },
+                 body: JSON.stringify({ token: this.props.user.token,
+                   resourceName: currentDB.resourceName, resourceType: currentDB.resourceType.toString(), link: currentDB.link, resourceAdvisory: currentDB.resourceAdvisory,
+                   resourceAdvisoryText: currentDB.resourceAdvisoryText, shortDescription: currentDB.shortDescription, longDescription: currentDB.longDescription,
+                   coverageDates: currentDB.coverageDates, access: currentDB.access, vendor: currentDB.vendor
+                 })
+               })
+  						 this.props.dispatch(editDatabase(currentDB.id, currentDB.resourceName, currentDB.resourceType, currentDB.link, currentDB.resourceAdvisory, currentDB.resourceAdvisoryText,
+  							 currentDB.shortDescription, currentDB.longDescription, currentDB.coverageDates, currentDB.access, currentDB.vendor))
+  						 this.props.dispatch(clearCurrentDatabase())
+  						 this.props.dispatch(updateCurrentAction("Add Database"))
+             } else {
+               this.props.dispatch(displayModal(!this.props.modal))
+             }
 						 break
 	       default:
 	           break
@@ -51,9 +80,23 @@ class AddDatabaseForm extends Component {
 	 }
 
 	 removeDatabase(id) {
-				this.props.dispatch(removeDatabase(id))
-				this.props.dispatch(clearCurrentDatabase())
-				this.props.dispatch(updateCurrentAction("Add Database"))
+     if (this.props.user.isLoggedIn) {
+			 if (window.confirm('Confirm Database Delete?')) {
+           fetch('https://libapps.uncw.edu/databases/' + id, {
+             method: 'DELETE',
+             headers: {
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+             },
+             body: JSON.stringify({ token: this.props.user.token })
+           })
+					 this.props.dispatch(removeDatabase(id))
+					 this.props.dispatch(clearCurrentDatabase())
+					 this.props.dispatch(updateCurrentAction("Add Database"))
+			 }
+     } else {
+       this.props.dispatch(displayModal(!this.props.modal))
+     }
 		}
 
 	render() {

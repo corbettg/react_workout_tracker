@@ -1,11 +1,33 @@
 import C from '../constants'
 import { combineReducers } from 'redux'
 
+export const modal = (state=[], action ) => {
+    switch(action.type) {
+      case C.DISPLAY_MODAL:
+          return action.payload
+      default:
+          return state
+    }
+}
+
+export const user = (state=[], action ) => {
+    switch(action.type) {
+      case C.UPDATE_USER_INFO:
+          return action.payload
+      case C.CLEAR_USER_INFO:
+          return action.payload
+      default:
+          return state
+    }
+}
+
 export const database = (state=null, action) =>
     (action.type === C.ADD_DATABASE) ? action.payload : state
 
 export const allDatabases = (state=[], action ) => {
     switch(action.type) {
+      case C.UPDATE_ALL_DATABASES:
+          return action.payload
       case C.ADD_DATABASE:
           //What is happening below is that we are checking to see if the title already exists. If it does, we do not update state
           const hasTitle = state.some(database => database.resourceName === action.payload.resourceName)
@@ -39,7 +61,6 @@ export const currentAction = (state=[], action) => {
     }
 }
 
-
 export const databaseListFilter = (state=[], action) => {
     switch (action.type) {
       case C.UPDATE_DATABASE_LIST_FILTER:
@@ -49,8 +70,9 @@ export const databaseListFilter = (state=[], action) => {
     }
 }
 
-
 export default combineReducers({
+    modal,
+    user,
     allDatabases,
     currentDatabase,
     currentAction,

@@ -1,5 +1,31 @@
 import C from './constants'
 
+export function displayModal(display) {
+  return {
+    type: C.DISPLAY_MODAL,
+    payload: display
+  }
+}
+
+export function updateUserInfo(username, isLoggedIn, token) {
+  return {
+    type: C.UPDATE_USER_INFO,
+    payload: {username, isLoggedIn, token}
+  }
+}
+export function clearUserInfo() {
+  return {
+    type: C.UPDATE_USER_INFO,
+    payload: {username: "", isLoggedIn: false, token: ""}
+  }
+}
+
+export function updateAllDatabases(allDatabases) {
+  return {
+    type: C.UPDATE_ALL_DATABASES,
+    payload: allDatabases
+  }
+}
 export function addDatabase(resourceName, resourceType, link, resourceAdvisory, resourceAdvisoryText, shortDescription, longDescription, coverageDates, access, vendor) {
   var id = Math.floor(Math.random(1) * 100);
   //ADD APP LOGIC HERE
